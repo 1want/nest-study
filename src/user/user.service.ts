@@ -12,34 +12,13 @@ export class UserService {
 
   async findAll() {
     const results = await this.studentRepository.find()
-
     return results ?? 'not found'
   }
 
-  async create(name: string) {
-    console.log(name, 'name')
-    const results = this.studentRepository.save({ name })
-    console.log(results, 'res')
-    return results
+  async create(body: any) {
+    const user = new User()
+    user.name = body.name
+    user.age = body.age || ''
+    this.studentRepository.save(user)
   }
-
-  // create(createUserDto: CreateUserDto) {
-  //   return 'This action adds a new user';
-  // }
-
-  // findAll() {
-  //   return `This action returns all user`;
-  // }
-
-  // findOne(id: number) {
-  //   return `This action returns a #${id} user`;
-  // }
-
-  // update(id: number, updateUserDto: UpdateUserDto) {
-  //   return `This action updates a #${id} user`;
-  // }
-
-  // remove(id: number) {
-  //   return `This action removes a #${id} user`;
-  // }
 }

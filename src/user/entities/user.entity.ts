@@ -14,8 +14,8 @@ export class User {
   @Column()
   name: string
 
-  // @Column()
-  // age: number
+  @Column({ nullable: true })
+  age: string
 
   @UpdateDateColumn()
   updateDate: Date

@@ -1,36 +1,30 @@
-import { Controller, Get, Post, Body } from '@nestjs/common'
+import {
+  Controller,
+  Get,
+  Req,
+  Post,
+  Body,
+  Query,
+  Param,
+  UseGuards,
+  ParseIntPipe
+} from '@nestjs/common'
 import { UserService } from './user.service'
-// import { CreateUserDto } from './dto/create-user.dto'
-// import { UpdateUserDto } from './dto/update-user.dto'
+import { RolesGuard } from './guard/roles.guard'
 
 @Controller('user')
+@UseGuards(RolesGuard)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  create(@Body() s: any) {
-    console.log(s, 's')
-    this.userService.create(s)
+  create(@Body() body: any) {
+    this.userService.create(body)
     return '创建成功'
   }
 
   @Get()
-  findAll() {
+  findAll(@Query('id') id: any) {
     return this.userService.findAll()
   }
-
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.userService.findOne(+id)
-  // }
-
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-  //   return this.userService.update(+id, updateUserDto)
-  // }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.userService.remove(+id)
-  // }
 }
