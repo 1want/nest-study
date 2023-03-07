@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Repository } from 'typeorm'
+import { Repository, Like } from 'typeorm'
 import { User } from './entities/user.entity'
 
 @Injectable()
@@ -10,8 +10,13 @@ export class UserService {
     private readonly studentRepository: Repository<User>
   ) {}
 
-  async findAll() {
-    const results = await this.studentRepository.find()
+  async findAll({ name, age }) {
+    const results = await this.studentRepository.find({
+      where: {
+        name,
+        age
+      }
+    })
     return results ?? 'not found'
   }
 

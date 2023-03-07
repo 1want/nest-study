@@ -7,7 +7,8 @@ import {
   Query,
   Param,
   UseGuards,
-  ParseIntPipe
+  ParseIntPipe,
+  HttpCode
 } from '@nestjs/common'
 import { UserService } from './user.service'
 import { RolesGuard } from './guard/roles.guard'
@@ -23,8 +24,9 @@ export class UserController {
     return '创建成功'
   }
 
-  @Get()
-  findAll(@Query('id') id: any) {
-    return this.userService.findAll()
+  @Post('/getList')
+  @HttpCode(200)
+  findAll(@Body() body: any) {
+    return this.userService.findAll(body)
   }
 }
