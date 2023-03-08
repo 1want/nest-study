@@ -12,21 +12,28 @@ import {
 } from '@nestjs/common'
 import { UserService } from './user.service'
 import { RolesGuard } from './guard/roles.guard'
+import { UserType } from './type'
 
-@Controller('user')
+@Controller('user/')
 @UseGuards(RolesGuard)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post()
-  create(@Body() body: any) {
+  @Post('getUser')
+  @HttpCode(200)
+  findAll(@Body() body: UserType) {
+    return this.userService.findAll(body)
+  }
+
+  @Post('addUser')
+  create(@Body() body: UserType) {
     this.userService.create(body)
     return '创建成功'
   }
 
-  @Post('/getList')
-  @HttpCode(200)
-  findAll(@Body() body: any) {
-    return this.userService.findAll(body)
+  @Post('deleteUser')
+  delete(@Body('id') id: number) {
+    this.userService.delete(id)
+    return '删除成功'
   }
 }
