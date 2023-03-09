@@ -31,8 +31,14 @@ export class UserController {
     return '创建成功'
   }
 
+  @Post('updateUser')
+  update(@Body() body: UserType) {
+    this.userService.update(body.id, body)
+    return '编辑成功'
+  }
+
   @Post('deleteUser')
-  delete(@Body('id') id: number) {
+  delete(@Body('id') id: number[]) {
     this.userService.delete(id)
     return '删除成功'
   }

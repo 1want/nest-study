@@ -17,6 +17,15 @@ export class User {
   @Column({ nullable: true })
   age: string
 
+  @Column()
+  phone: string
+
+  @Column('simple-array')
+  hobby: string[]
+
+  @Column()
+  gender: number
+
   @UpdateDateColumn()
   updateDate: Date
 

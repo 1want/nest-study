@@ -25,10 +25,17 @@ export class UserService {
     const user = new User()
     user.name = body.name
     user.age = body.age || ''
+    user.phone = body.phone
+    user.gender = body.gender
+    user.hobby = body.hobby
     this.user.save(user)
   }
 
-  async delete(id: number) {
+  async update(id, body: any) {
+    this.user.update(id, body)
+  }
+
+  async delete(id: number[]) {
     this.user.delete(id)
   }
 }
