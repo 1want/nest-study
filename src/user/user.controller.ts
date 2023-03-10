@@ -42,4 +42,9 @@ export class UserController {
     this.userService.delete(id)
     return '删除成功'
   }
+
+  @Post('register')
+  register(@Body() createUser) {
+    return this.userService.register(createUser)
+  }
 }
