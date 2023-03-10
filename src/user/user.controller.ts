@@ -13,6 +13,7 @@ import {
 import { UserService } from './user.service'
 import { RolesGuard } from './guard/roles.guard'
 import { UserType } from './type'
+import { AuthGuard } from '@nestjs/passport'
 
 @Controller('user/')
 @UseGuards(RolesGuard)

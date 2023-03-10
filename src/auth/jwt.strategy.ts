@@ -1,19 +1,30 @@
-import { ExtractJwt, Strategy } from 'passport-jwt'
+import { ConfigService } from '@nestjs/config'
+import { UnauthorizedException } from '@nestjs/common'
+import { InjectRepository } from '@nestjs/typeorm'
 import { PassportStrategy } from '@nestjs/passport'
-import { Injectable } from '@nestjs/common'
-import { jwtConstants } from './constants'
+import { StrategyOptions, Strategy, ExtractJwt } from 'passport-jwt'
+import { User } from 'src/user/entities/user.entity'
+import { Repository } from 'typeorm'
+import { AuthService } from './auth.service'
 
-@Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor() {
+export class JwtStorage extends PassportStrategy(Strategy) {
+  constructor(
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+    private readonly configService: ConfigService,
+    private readonly authService: AuthService
+  ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      ignoreExpiration: false,
-      secretOrKey: jwtConstants.secret
-    })
+      secretOrKey: configService.get('SECRET')
+    } as StrategyOptions)
   }
 
-  async validate(payload: any) {
-    return { userId: payload.sub, username: payload.username }
+  async validate(user: User) {
+    const existUser = await this.authService.getUser(user)
+    if (!existUser) {
+      throw new UnauthorizedException('token不正确')
+    }
+    return existUser
   }
 }
