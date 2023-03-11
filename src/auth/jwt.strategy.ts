@@ -1,4 +1,4 @@
-import { ConfigService } from '@nestjs/config'
+import { jwtConstants } from './constants'
 import { UnauthorizedException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { PassportStrategy } from '@nestjs/passport'
@@ -11,12 +11,11 @@ export class JwtStorage extends PassportStrategy(Strategy) {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-    private readonly configService: ConfigService,
     private readonly authService: AuthService
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: configService.get('SECRET')
+      secretOrKey: jwtConstants.secret
     } as StrategyOptions)
   }
 

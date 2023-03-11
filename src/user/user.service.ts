@@ -11,6 +11,13 @@ export class UserService {
     private readonly user: Repository<User>
   ) {}
 
+  async findOne({ username }) {
+    const results = await this.user.findOne({
+      where: { username }
+    })
+    return results ?? 'not found'
+  }
+
   async findAll({ username }: UserType) {
     const results = await this.user.find({
       where: {
