@@ -4,9 +4,12 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
   CreateDateColumn,
-  BeforeInsert
+  BeforeInsert,
+  OneToOne,
+  JoinColumn
 } from 'typeorm'
 import * as bcrypt from 'bcryptjs'
+import { Posts } from '../../posts/entities/post.entity'
 
 @Entity()
 export class User {
@@ -19,17 +22,12 @@ export class User {
   @Column({ length: 100, select: false })
   password: string
 
-  @Column({ nullable: true })
-  age: string
-
   @Column({ default: '' })
   phone: string
 
-  @Column({
-    type: 'simple-array',
-    nullable: true
-  })
-  hobby: string[]
+  @OneToOne(type => Posts, posts => posts.user)
+  @JoinColumn()
+  posts: string[]
 
   @Column({ default: 0 })
   gender: number

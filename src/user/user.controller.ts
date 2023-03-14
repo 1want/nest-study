@@ -13,7 +13,6 @@ import {
 import { UserService } from './user.service'
 import { RolesGuard } from './guard/roles.guard'
 import { UserType } from './type'
-import { AuthGuard } from '@nestjs/passport'
 
 @Controller('user/')
 @UseGuards(RolesGuard)
@@ -28,8 +27,7 @@ export class UserController {
 
   @Post('addUser')
   create(@Body() body: UserType) {
-    this.userService.create(body)
-    return '创建成功'
+    return this.userService.create(body)
   }
 
   @Post('updateUser')
@@ -42,10 +40,5 @@ export class UserController {
   delete(@Body('id') id: number[]) {
     this.userService.delete(id)
     return '删除成功'
-  }
-
-  @Post('register')
-  register(@Body() createUser) {
-    return this.userService.register(createUser)
   }
 }

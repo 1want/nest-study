@@ -28,20 +28,7 @@ export class UserService {
   }
 
   async create(body: any) {
-    const user = this.user.create(body)
-    this.user.save(user)
-  }
-
-  async update(id, body: any) {
-    this.user.update(id, body)
-  }
-
-  async delete(id: number[]) {
-    this.user.delete(id)
-  }
-
-  async register(createUser) {
-    const { username } = createUser
+    const { username } = body
 
     const existUser = await this.user.findOne({
       where: { username }
@@ -50,10 +37,18 @@ export class UserService {
       throw new HttpException('用户名已存在', HttpStatus.BAD_REQUEST)
     }
 
-    const user = await this.user.create(createUser)
+    const user = await this.user.create(body)
     await this.user.save(user)
     return this.user.findOne({
       where: { username }
     })
+  }
+
+  async update(id, body: any) {
+    this.user.update(id, body)
+  }
+
+  async delete(id: number[]) {
+    this.user.delete(id)
   }
 }

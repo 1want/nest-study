@@ -7,10 +7,11 @@ import { LocalStorage } from './local.strategy'
 import { JwtStorage } from './jwt.strategy'
 import { User } from '../user/entities/user.entity'
 import { jwtConstants } from './constants'
-import { UserService } from 'src/user/user.service'
+import { UserModule } from 'src/user/user.module'
 
 @Module({
   imports: [
+    UserModule,
     PassportModule,
     JwtModule.register({
       secret: jwtConstants.secret,
@@ -18,7 +19,7 @@ import { UserService } from 'src/user/user.service'
     }),
     TypeOrmModule.forFeature([User])
   ],
-  providers: [AuthService, LocalStorage, JwtStorage, UserService],
+  providers: [AuthService, LocalStorage, JwtStorage],
   exports: [AuthService]
 })
 export class AuthModule {}
