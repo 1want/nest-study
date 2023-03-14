@@ -18,7 +18,4 @@ export class Posts {
     nullable: true
   })
   hobby: string[]
-
-  @OneToOne(type => User, user => user.posts)
-  user: User
 }

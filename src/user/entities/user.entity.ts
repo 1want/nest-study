@@ -25,10 +25,6 @@ export class User {
   @Column({ default: '' })
   phone: string
 
-  @OneToOne(type => Posts, posts => posts.user)
-  @JoinColumn()
-  posts: string[]
-
   @Column({ default: 0 })
   gender: number
 
@@ -41,6 +37,10 @@ export class User {
     name: 'create_date'
   })
   createDate: Date
+
+  @OneToOne(type => Posts)
+  @JoinColumn()
+  posts: Posts
 
   @BeforeInsert()
   async encryptPwd() {

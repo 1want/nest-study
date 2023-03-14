@@ -1,15 +1,5 @@
-import {
-  Controller,
-  Get,
-  Req,
-  Post,
-  Body,
-  Query,
-  Param,
-  UseGuards,
-  ParseIntPipe,
-  HttpCode
-} from '@nestjs/common'
+import { Controller, Post, Body, UseGuards, HttpCode } from '@nestjs/common'
+// import { Tranasc } from 'typeorm'
 import { UserService } from './user.service'
 import { RolesGuard } from './guard/roles.guard'
 import { UserType } from './type'
@@ -22,12 +12,13 @@ export class UserController {
   @Post('getUser')
   @HttpCode(200)
   findAll(@Body() body: UserType) {
-    return this.userService.findAll(body)
+    return this.userService.findAll()
   }
 
   @Post('addUser')
   create(@Body() body: UserType) {
-    return this.userService.create(body)
+    this.userService.create(body)
+    return '创建成功'
   }
 
   @Post('updateUser')
