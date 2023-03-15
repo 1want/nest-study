@@ -22,13 +22,12 @@ export class UserService {
   }
 
   async findAll() {
-    const res = await this.user
+    const results = await this.user
       .createQueryBuilder('user')
       .leftJoinAndSelect('user.posts', 'posts')
       .getMany()
 
-    return res
-    // return results ?? 'not found'
+    return results ?? 'not found'
   }
 
   async create(body: any) {

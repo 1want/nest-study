@@ -2,7 +2,7 @@ import { jwtConstants } from './constants'
 import { UnauthorizedException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { PassportStrategy } from '@nestjs/passport'
-import { StrategyOptions, Strategy, ExtractJwt } from 'passport-jwt'
+import { Strategy, ExtractJwt } from 'passport-jwt'
 import { User } from 'src/user/entities/user.entity'
 import { Repository } from 'typeorm'
 import { AuthService } from './auth.service'
@@ -16,7 +16,7 @@ export class JwtStorage extends PassportStrategy(Strategy) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       secretOrKey: jwtConstants.secret
-    } as StrategyOptions)
+    })
   }
 
   async validate(user: User) {
