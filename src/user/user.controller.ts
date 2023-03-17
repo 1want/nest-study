@@ -1,13 +1,38 @@
-import { Controller, Post, Body, UseGuards, HttpCode } from '@nestjs/common'
-// import { Tranasc } from 'typeorm'
+import {
+  Controller,
+  Post,
+  Get,
+  Body,
+  UseGuards,
+  HttpCode,
+  Req
+} from '@nestjs/common'
 import { UserService } from './user.service'
 import { RolesGuard } from './guard/roles.guard'
 import { UserType } from './type'
+import { AuthGuard } from '@nestjs/passport'
+import { AuthService } from '../auth/auth.service'
 
 @Controller('user/')
 @UseGuards(RolesGuard)
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly authService: AuthService
+  ) {}
+
+  @UseGuards(AuthGuard('local'))
+  @HttpCode(200)
+  @Post('login')
+  async login(@Req() req) {
+    return this.authService.login(req.user)
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('myInfo')
+  async getUserInfo(@Req() req) {
+    return req.user
+  }
 
   @Post('getUser')
   @HttpCode(200)
